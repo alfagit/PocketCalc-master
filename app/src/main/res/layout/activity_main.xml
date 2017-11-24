@@ -263,9 +263,15 @@
 
     <Button
         android:id="@+id/button_s"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.77"
+        android:text="音声入力" />
+
+    <TextView
+        android:id="@+id/text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="音声入力"
-        android:layout_weight="0.77" />
+        android:text="TextView" />
 
 </LinearLayout>

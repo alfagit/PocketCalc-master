@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         lang = 0;
 
         // 認識結果を表示させる
-        //textView = (TextView)findViewById(R.id.text_view);
+        textView = (TextView)findViewById(R.id.text_view);
 
         buttonStart = (Button) findViewById(R.id.button_s);
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
 
         textViewDisplay = (TextView) findViewById(R.id.textViewDisplay);
         int[] buttonIDs = {R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4,
