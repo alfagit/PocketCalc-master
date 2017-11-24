@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://C:\Users\ai1_2017\Downloads\PocketCalc-master\PocketCalc.iml" filepath="C:\Users\ai1_2017\Downloads\PocketCalc-master\PocketCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PocketCalc-master.iml" filepath="$PROJECT_DIR$/PocketCalc-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>
