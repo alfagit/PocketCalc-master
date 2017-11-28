@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
                     array_num = candidates.get(0).split("");
                     //ログに表示
                     Log.d("debug", array_num[i]);
-
                 }
             }
         }
