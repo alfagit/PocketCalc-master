@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1000;
     private TextView textView;
     private Button buttonStart;
+    private String temp;
+    private String[] array_num;
+
 
     private int lang;
 
@@ -155,8 +158,20 @@ public class MainActivity extends AppCompatActivity {
             if (candidates.size() > 0) {
                 // 認識結果候補で一番有力なものを表示
                 textView.setText(candidates.get(0));
+                //1文字ずつ格納
+                int i = 0;
+                for(i = 0;i<candidates.get(0).length();i++) {
+                    array_num = candidates.get(0).split("");
+                    //ログに表示
+                    Log.d("debug", array_num[i]);
+                }
             }
         }
+
+
+        /*for(int i=0;) {
+            buttonStr =
+        }*/
     }
 
 
@@ -169,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+
 
         long displayNum;
         switch (buttonStr) {
