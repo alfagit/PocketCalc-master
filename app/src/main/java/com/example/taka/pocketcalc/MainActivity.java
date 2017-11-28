@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(candidates.get(0));
                 //1文字ずつ格納
                 int i = 0;
-                for(i = 0;i<candidates.get(0).length();i++) {
+                for(i = 0;i<candidates.get(0).length()+1;i++) {
                     array_num = candidates.get(0).split("");
                     //ログに表示+1
                     Log.d("debug", array_num[i]);
@@ -168,10 +168,22 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //数字と文字に分ける
+        for(int i=0;array_num[i]=="=";i++) {
+            if(array_num[i]=="1") process("1");
+            else if(array_num[i]=="2") process("2");
+            else if(array_num[i]=="3") process("3");
+            else if(array_num[i]=="4") process("4");
+            else if(array_num[i]=="5") process("5");
+            else if(array_num[i]=="6") process("6");
+            else if(array_num[i]=="7") process("7");
+            else if(array_num[i]=="8") process("8");
+            else if(array_num[i]=="9") process("9");
+            else if(array_num[i]=="0") process("0");
+            else if(array_num[i]=="2") process("2");
+        }
 
-        /*for(int i=0;) {
-            buttonStr =
-        }*/
+
     }
 
 
