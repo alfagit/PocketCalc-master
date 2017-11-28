@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 int i = 0;
                 for(i = 0;i<candidates.get(0).length();i++) {
                     array_num = candidates.get(0).split("");
-                    //ログに表示
+                    //ログに表示+1
                     Log.d("debug", array_num[i]);
                 }
             }
