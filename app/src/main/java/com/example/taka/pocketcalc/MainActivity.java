@@ -163,25 +163,24 @@ public class MainActivity extends AppCompatActivity {
                 int i = 0;
                 length=candidates.get(0).length();
 
-
-                for(i = 0;i<length+1;i++) {
-
-                    if(candidates.get(0).equals("リ"))array_num[i] = "クリア";
-                    else if(candidates.get(0).equals("か"))array_num[i] = "*";
-                    else if(candidates.get(0).equals("話"))array_num[i] = "=";
-                    array_num = candidates.get(0).split("");
-
-                    //ログに表示+1
-                    Log.d("debug", array_num[i]);
+                //オールクリアをここで判別（candidatesの中身を比較）
+                if(candidates.get(0).contains("オールクリア")) {
+                    process("AC");
                 }
+                    //
+                array_num = candidates.get(0).split("");
+
+
+                //ログに表示+1
+                Log.d("debug", array_num[i]);
+
             }
         }
 
         //数字と文字に分ける
         for(int i=0;i<length+1;i++) {
-            if(array_num[i].equals("1")) {
-                process("1");
-            }else if(array_num[i].equals("2")) process("2");
+            if(array_num[i].equals("1"))process("1");
+            else if(array_num[i].equals("2")) process("2");
             else if(array_num[i].equals("3")) process("3");
             else if(array_num[i].equals("4")) process("4");
             else if(array_num[i].equals("5")) process("5");
@@ -195,7 +194,12 @@ public class MainActivity extends AppCompatActivity {
             else if(array_num[i].equals("*")) process("*");
             else if(array_num[i].equals("/")) process("/");
             else if(array_num[i].equals("=")) process("=");
-            else if(array_num[i].equals("クリア")) process("AC");
+            else if(array_num[i].equals("ク")) process("AC");
+            else if(array_num[i].equals("引")) process("-");
+            else if(array_num[i].equals("か")) process("*");
+            else if(array_num[i].equals("は")) process("=");
+            else if(array_num[i].equals("イ")) process("=");
+            else if(array_num[i].equals("÷")) process("/");
 
         }
 

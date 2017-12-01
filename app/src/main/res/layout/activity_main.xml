@@ -263,7 +263,7 @@
 
     <Button
         android:id="@+id/button_s"
-        android:layout_width="170dp"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.77"
         android:text="音声入力" />
