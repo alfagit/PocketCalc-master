@@ -14,10 +14,14 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+import orz.kassy.shakegesture.ShakeGestureManager;
+
+
+public class MainActivity extends AppCompatActivity{
     private static final int maxKeta = 15;
     private static final double maxDouble = 999999999999999.0;
 
@@ -41,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
     private int lang;
 
+    private ShakeGestureManager mGestureManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // 言語選択 0:日本語、1:英語、2:オフライン、その他:General
         lang = 0;
@@ -107,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     // 画面回転の前に状態を保存する
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -116,6 +126,34 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("operator", operator);
         outState.putBoolean("firstNum", firstNum);
     }
+
+    //シェイク判定
+    protected void onResume() {
+
+        super.onResume();
+        mGestureManager = new ShakeGestureManager(this, mListener);
+        mGestureManager.startSensing();
+    }
+
+    protected void onPause() {
+
+        super.onPause();
+        mGestureManager.stopSensing();
+    }
+
+
+    private ShakeGestureManager.GestureListener mListener = new ShakeGestureManager.GestureListener() {
+        @Override
+        public void onGestureDetected(int gestureType, int gestureCount) {
+            // ジェスチャーを認識したらここが呼ばれる
+            speech();
+        }
+
+        @Override
+        public void onMessage(String s) {
+
+        }
+    };
 
 
     private void speech() {
@@ -166,8 +204,10 @@ public class MainActivity extends AppCompatActivity {
                 //オールクリアをここで判別（candidatesの中身を比較）
                 if(candidates.get(0).contains("オールクリア")) {
                     process("AC");
+                }else if(candidates.get(0).contains("クリア")) {
+                    process("C");
                 }
-                    //
+                //
                 array_num = candidates.get(0).split("");
 
 
@@ -179,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
         //数字と文字に分ける
         for(int i=0;i<length+1;i++) {
+
             if(array_num[i].equals("1"))process("1");
             else if(array_num[i].equals("2")) process("2");
             else if(array_num[i].equals("3")) process("3");
@@ -200,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             else if(array_num[i].equals("は")) process("=");
             else if(array_num[i].equals("イ")) process("=");
             else if(array_num[i].equals("÷")) process("/");
-
+            else textView.setText("No Activity ");
         }
 
 

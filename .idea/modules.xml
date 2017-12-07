@@ -5,6 +5,7 @@
       <module fileurl="file://C:\Users\ai1_2017\Downloads\PocketCalc-master\PocketCalc.iml" filepath="C:\Users\ai1_2017\Downloads\PocketCalc-master\PocketCalc.iml" />
       <module fileurl="file://$PROJECT_DIR$/PocketCalc-master.iml" filepath="$PROJECT_DIR$/PocketCalc-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shakegesturemanager/shakegesturemanager.iml" filepath="$PROJECT_DIR$/shakegesturemanager/shakegesturemanager.iml" />
     </modules>
   </component>
 </project>
