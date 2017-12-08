@@ -230,24 +230,24 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/buttonEq"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_column="1"
+                android:layout_weight="1"
                 android:text="="
                 android:textSize="35sp"
-                android:id="@+id/buttonEq"
-                android:layout_column="1"
-                tools:ignore="ButtonStyle,HardcodedText"
-                android:layout_weight="1" />
+                tools:ignore="ButtonStyle,HardcodedText" />
 
             <Button
+                android:id="@+id/buttonSgn"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
+                android:layout_column="2"
+                android:layout_weight="1"
                 android:text="±"
                 android:textSize="35sp"
-                android:id="@+id/buttonSgn"
-                android:layout_column="2"
-                tools:ignore="ButtonStyle,HardcodedText"
-                android:layout_weight="1" />
+                tools:ignore="ButtonStyle,HardcodedText" />
 
             <Button
                 android:layout_width="0dp"
@@ -261,17 +261,41 @@
         </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/button_s"
-        android:layout_width="165dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.77"
-        android:text="音声入力" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_s"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="音声入力" />
+
+        <Button
+            android:id="@+id/button_tts"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="音声出力" />
+
+        <Button
+            android:id="@+id/buttonDot"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="."
+            android:textSize="35sp"
+            tools:ignore="ButtonStyle,HardcodedText" />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:text="TextView" />
 
 </LinearLayout>

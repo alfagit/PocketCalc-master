@@ -1,5 +1,6 @@
 package com.example.taka.pocketcalc;
 
+import android.os.Build;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -13,15 +14,17 @@ import android.widget.TextView;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
-
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import java.util.HashMap;
 import orz.kassy.shakegesture.ShakeGestureManager;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,TextToSpeech.OnInitListener{
     private static final int maxKeta = 15;
     private static final double maxDouble = 999999999999999.0;
 
@@ -38,7 +41,11 @@ public class MainActivity extends AppCompatActivity{
     private static final int REQUEST_CODE = 1000;
     private TextView textView;
     private Button buttonStart;
-    private String temp;
+
+    //音声出力フィールド
+    private TextToSpeech tts;
+    private static final String TAG = "TestTTS";
+
     private String[] array_num;
     private int length;
 
@@ -53,6 +60,10 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TTS インスタンス生成
+        tts = new TextToSpeech(this, this);
+        Button ttsButton = (Button)findViewById(R.id.button_tts);
+        ttsButton.setOnClickListener(this);
 
         // 言語選択 0:日本語、1:英語、2:オフライン、その他:General
         lang = 0;
@@ -71,11 +82,12 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+
         textViewDisplay = (TextView) findViewById(R.id.textViewDisplay);
         int[] buttonIDs = {R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4,
                 R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,
                 R.id.buttonBS, R.id.buttonC, R.id.buttonAC, R.id.buttonAdd, R.id.buttonSub,
-                R.id.buttonMul, R.id.buttonEq, R.id.buttonDiv, R.id.buttonMod, R.id.buttonSgn};
+                R.id.buttonMul, R.id.buttonEq, R.id.buttonDiv, R.id.buttonMod, R.id.buttonSgn,R.id.buttonDot};
         for (int buttonID : buttonIDs) {
             Button button = (Button) findViewById(buttonID);
             if (button == null) {
@@ -115,6 +127,109 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+
+    @Override
+    public void onInit(int status) {
+        // TTS初期化
+        if (TextToSpeech.SUCCESS == status) {
+            Log.d(TAG, "initialized");
+        } else {
+            Log.e(TAG, "faile to initialize");
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        speechText();
+    }
+    private void shutDown(){
+        if (null != tts) {
+            // to release the resource of TextToSpeech
+            tts.shutdown();
+        }
+    }
+
+    private void speechText() {
+        TextView textViewDisplay = (TextView)findViewById(R.id.textViewDisplay);
+
+        // textViewDisplayからテキストを取得
+        String string = textViewDisplay.getText().toString();
+
+        if (0 < string.length()) {
+            if (tts.isSpeaking()) {
+                tts.stop();
+                return;
+            }
+            setSpeechRate(1.0f);
+            setSpeechPitch(1.0f);
+
+            // tts.speak(text, TextToSpeech.QUEUE_FLUSH, null) に
+            // KEY_PARAM_UTTERANCE_ID を HasMap で設定
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"messageID");
+
+            tts.speak(string, TextToSpeech.QUEUE_FLUSH, map);
+            setTtsListener();
+
+        }
+    }
+
+    // 読み上げのスピード
+    private void setSpeechRate(float rate){
+        if (null != tts) {
+            tts.setSpeechRate(rate);
+        }
+    }
+
+    // 読み上げのピッチ
+    private void setSpeechPitch(float pitch){
+        if (null != tts) {
+            tts.setPitch(pitch);
+        }
+    }
+
+    // 読み上げの始まりと終わりを取得
+    private void setTtsListener(){
+        // android version more than 15th
+        // 市場でのシェアが15未満は数パーセントなので除外
+        if (Build.VERSION.SDK_INT >= 15)
+        {
+            int listenerResult = tts.setOnUtteranceProgressListener(new UtteranceProgressListener()
+            {
+                @Override
+                public void onDone(String utteranceId)
+                {
+                    Log.d(TAG,"progress on Done " + utteranceId);
+                }
+
+                @Override
+                public void onError(String utteranceId)
+                {
+                    Log.d(TAG,"progress on Error " + utteranceId);
+                }
+
+                @Override
+                public void onStart(String utteranceId)
+                {
+                    Log.d(TAG,"progress on Start " + utteranceId);
+                }
+
+            });
+            if (listenerResult != TextToSpeech.SUCCESS)
+            {
+                Log.e(TAG, "failed to add utterance progress listener");
+            }
+        }
+        else {
+            Log.e(TAG, "Build VERSION is less than API 15");
+        }
+
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        shutDown();
+    }
 
 
     // 画面回転の前に状態を保存する
@@ -206,10 +321,15 @@ public class MainActivity extends AppCompatActivity{
                     process("AC");
                 }else if(candidates.get(0).contains("クリア")) {
                     process("C");
+                }else if(candidates.get(0).contains("読み上げ")) {
+                    speechText();
+                }else if(candidates.get(0).contains("再生")) {
+                    speechText();
                 }
+
+
                 //
                 array_num = candidates.get(0).split("");
-
 
                 //ログに表示+1
                 Log.d("debug", array_num[i]);
@@ -241,7 +361,7 @@ public class MainActivity extends AppCompatActivity{
             else if(array_num[i].equals("は")) process("=");
             else if(array_num[i].equals("イ")) process("=");
             else if(array_num[i].equals("÷")) process("/");
-            else textView.setText("No Activity ");
+
         }
 
 
@@ -271,6 +391,7 @@ public class MainActivity extends AppCompatActivity{
             case "7":
             case "8":
             case "9":
+
                 if (firstNum) {
                     if (!operator.equals("")) {
                         operand1 = display;
@@ -318,6 +439,7 @@ public class MainActivity extends AppCompatActivity{
                             if (Math.abs(operand1Double * operand2Double) > maxDouble) {
                                 textViewDisplay.setText(OVERFLOW);
                             } else {
+
                                 textViewDisplay.setText(Long.toString(operand1Long * operand2Long));
                             }
                             break;
@@ -325,7 +447,8 @@ public class MainActivity extends AppCompatActivity{
                             if (operand2Long == 0L) {
                                 textViewDisplay.setText(ZERODIV);
                             } else {
-                                textViewDisplay.setText(Long.toString(operand1Long / operand2Long));
+                                //textViewDisplay.setText(Long.toString(operand1Long / operand2Long));
+                                textViewDisplay.setText(Double.toString(operand1Double / operand2Double));
                             }
                             break;
                         case "%":
@@ -369,6 +492,10 @@ public class MainActivity extends AppCompatActivity{
                 operator = "";
                 break;
 
+            /*case ".":
+                textViewDisplay.setText(display + ".");
+                break;
+            */
             default:
                 Log.d("ERROR", "識別できないボタンが押された：" + buttonStr);
         }
