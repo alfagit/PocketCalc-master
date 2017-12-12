@@ -9,27 +9,27 @@
     android:weightSum="1">
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:text="copy blow to clipboard"
         android:id="@+id/buttonCopy"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:layout_gravity="center_horizontal"
+        android:text="結果をコピーします"
+        android:textSize="25sp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0"
-        android:textSize="35sp"
         android:id="@+id/textViewDisplay"
-        android:textAlignment="viewEnd"
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:layout_columnWeight="1.0"
         android:layout_gravity="end"
         android:background="#fcf5d4"
-        android:layout_columnWeight="1.0"
-        tools:ignore="HardcodedText"
         android:paddingEnd="5dp"
-        android:paddingStart="5dp" />
+        android:paddingStart="5dp"
+        android:text="0"
+        android:textAlignment="viewEnd"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="35sp"
+        tools:ignore="HardcodedText" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -280,22 +280,13 @@
             android:layout_weight="1"
             android:text="音声出力" />
 
-        <Button
-            android:id="@+id/buttonDot"
-            android:layout_width="32dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="."
-            android:textSize="35sp"
-            tools:ignore="ButtonStyle,HardcodedText" />
-
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/text_view"
         android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:text="TextView" />
+        android:layout_height="203dp"
+        android:text="認識結果" />
 
 </LinearLayout>

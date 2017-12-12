@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView textViewDisplay;
     private ClipboardManager clipboard;
+    private Button buttonCopy;
+    private ClipData clip;
 
     //音声認識フィールド
     private static final int REQUEST_CODE = 1000;
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int[] buttonIDs = {R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4,
                 R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9,
                 R.id.buttonBS, R.id.buttonC, R.id.buttonAC, R.id.buttonAdd, R.id.buttonSub,
-                R.id.buttonMul, R.id.buttonEq, R.id.buttonDiv, R.id.buttonMod, R.id.buttonSgn,R.id.buttonDot};
+                R.id.buttonMul, R.id.buttonEq, R.id.buttonDiv, R.id.buttonMod, R.id.buttonSgn};
         for (int buttonID : buttonIDs) {
             Button button = (Button) findViewById(buttonID);
             if (button == null) {
@@ -105,18 +108,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        Button buttonCopy = (Button) findViewById(R.id.buttonCopy);
+        buttonCopy = (Button) findViewById(R.id.buttonCopy);
         if (buttonCopy == null) {
             Log.d("ERROR", "buttonCopy == null");
         } else {
             buttonCopy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ClipData clip = ClipData.newPlainText("copied_text", textViewDisplay.getText().toString());
+                    clip = ClipData.newPlainText("copied_text", textViewDisplay.getText().toString());
                     clipboard.setPrimaryClip(clip);
+                    //音声出力
+                    tts.speak("コピーしました",TextToSpeech.QUEUE_FLUSH, null);
+                    Toast.makeText(MainActivity.this, R.string.copy_label, Toast.LENGTH_SHORT).show();
                 }
             });
+
         }
+
+
+
 
         // 画面回転の後に状態を元に戻す
         if (savedInstanceState != null) {
@@ -325,8 +335,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     speechText();
                 }else if(candidates.get(0).contains("再生")) {
                     speechText();
-                }
+                }else if(candidates.get(0).contains("コピー")) {
+                    clip = ClipData.newPlainText("copied_text", textViewDisplay.getText().toString());
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(MainActivity.this, R.string.copy_label, Toast.LENGTH_SHORT).show();
+                    //音声出力
+                    tts.speak("コピーしました",TextToSpeech.QUEUE_FLUSH, null);
 
+                }
 
                 //
                 array_num = candidates.get(0).split("");
@@ -334,39 +350,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //ログに表示+1
                 Log.d("debug", array_num[i]);
 
+
+                //数字と文字に分ける
+                for(i=0;i<length+1;i++) {
+
+                    if(array_num[i].equals("1"))process("1");
+                    else if(array_num[i].equals("2")) process("2");
+                    else if(array_num[i].equals("3")) process("3");
+                    else if(array_num[i].equals("4")) process("4");
+                    else if(array_num[i].equals("5")) process("5");
+                    else if(array_num[i].equals("6")) process("6");
+                    else if(array_num[i].equals("7")) process("7");
+                    else if(array_num[i].equals("8")) process("8");
+                    else if(array_num[i].equals("9")) process("9");
+                    else if(array_num[i].equals("0")) process("0");
+                    else if(array_num[i].equals("+")) process("+");
+                    else if(array_num[i].equals("-")) process("-");
+                    else if(array_num[i].equals("*")) process("*");
+                    else if(array_num[i].equals("/")) process("/");
+                    else if(array_num[i].equals("=")) process("=");
+                    else if(array_num[i].equals("ク")) process("AC");
+                    else if(array_num[i].equals("引")) process("-");
+                    else if(array_num[i].equals("か")) process("*");
+                    else if(array_num[i].equals("は")) process("=");
+                    else if(array_num[i].equals("話")) process("=");
+                    else if(array_num[i].equals("イ")) process("=");
+                    else if(array_num[i].equals("÷")) process("/");
+                    else if(array_num[i].equals("あ")) process("%");
+
+                }
             }
         }
-
-        //数字と文字に分ける
-        for(int i=0;i<length+1;i++) {
-
-            if(array_num[i].equals("1"))process("1");
-            else if(array_num[i].equals("2")) process("2");
-            else if(array_num[i].equals("3")) process("3");
-            else if(array_num[i].equals("4")) process("4");
-            else if(array_num[i].equals("5")) process("5");
-            else if(array_num[i].equals("6")) process("6");
-            else if(array_num[i].equals("7")) process("7");
-            else if(array_num[i].equals("8")) process("8");
-            else if(array_num[i].equals("9")) process("9");
-            else if(array_num[i].equals("0")) process("0");
-            else if(array_num[i].equals("+")) process("+");
-            else if(array_num[i].equals("-")) process("-");
-            else if(array_num[i].equals("*")) process("*");
-            else if(array_num[i].equals("/")) process("/");
-            else if(array_num[i].equals("=")) process("=");
-            else if(array_num[i].equals("ク")) process("AC");
-            else if(array_num[i].equals("引")) process("-");
-            else if(array_num[i].equals("か")) process("*");
-            else if(array_num[i].equals("は")) process("=");
-            else if(array_num[i].equals("イ")) process("=");
-            else if(array_num[i].equals("÷")) process("/");
-
-        }
-
-
     }
-
 
     @SuppressLint("SetTextI18n")
     private void process(String buttonStr) {
@@ -464,10 +479,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 if (buttonStr.equals("=")) {
                     operator = "";
+                    speechText();
                 } else {
                     operator = buttonStr;
                 }
                 firstNum = true;
+
                 break;
 
             case "←":
@@ -484,12 +501,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case "C":
                 textViewDisplay.setText("0");
+                tts.speak("クリアしました",TextToSpeech.QUEUE_FLUSH, null);
                 break;
 
             case "AC":
                 textViewDisplay.setText("0");
                 operand1 = "";
                 operator = "";
+                tts.speak("オールクリアしました",TextToSpeech.QUEUE_FLUSH, null);
                 break;
 
             /*case ".":

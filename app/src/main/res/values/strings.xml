@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">音声電卓</string>
+    <string name="copy_label">コピーしました。</string>
 </resources>
