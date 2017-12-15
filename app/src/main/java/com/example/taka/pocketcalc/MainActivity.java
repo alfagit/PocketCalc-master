@@ -331,6 +331,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     process("AC");
                 }else if(candidates.get(0).contains("クリア")) {
                     process("C");
+                }else if(candidates.get(0).contains("戻る")) {
+                    process("←");
                 }else if(candidates.get(0).contains("読み上げ")) {
                     speechText();
                 }else if(candidates.get(0).contains("再生")) {
@@ -500,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case "C":
+
                 textViewDisplay.setText("0");
                 tts.speak("クリアしました",TextToSpeech.QUEUE_FLUSH, null);
                 break;
